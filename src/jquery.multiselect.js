@@ -18,7 +18,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-(function($, undefined) {
+define(["jquery", "jqueryui"], function($) {
 
   var multiselectID = 0;
   var $doc = $(document);
@@ -713,8 +713,10 @@
       var o = this.options;
 
       // use the position utility if it exists and options are specifified
-      if($.ui.position && !$.isEmptyObject(o.position)) {
+      if($.ui.position ) { // && !$.isEmptyObject(o.position)) {
         o.position.of = o.position.of || this.button;
+        o.position.my = o.position.my || "left top";
+        o.position.at = o.position.at || "left bottom";
 
         this.menu
           .show()
@@ -723,7 +725,10 @@
 
         // otherwise fallback to custom positioning
       } else {
-        var pos = this.button.offset();
+	if (o.appendTo.get(0).nodeName !== "BODY")
+	    var pos = this.button.position();
+        else
+	    var pos = this.button.offset();
 
         this.menu.css({
           top: pos.top + this.button.outerHeight(),
@@ -783,4 +788,4 @@
     }
   });
 
-})(jQuery);
+});
